@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kelompok 8</title>
+  <style>
+    :root{
+      --red:#e33;
+      --dark:#0f1720;
+      --muted:#6b7280;
+      --bg:#fff;
+      --card-radius:12px;
+      --transition:200ms ease;
+      --container:1200px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:var(--dark);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.35;
+    }
+    .container{
+      max-width:var(--container);
+      margin:0 auto;
+      padding:0 20px;
+    }
+    header{
+      border-bottom:1px solid #eef2f6;
+      background:#fff;
+      position:sticky;
+      top:0;
+      z-index:30;
+      box-shadow: 0 2px 6px rgba(10,10,10,0.02);
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      height:72px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:var(--dark);
+    }
+    .logo .mark{
+      width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--red),#c11);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px;
+      box-shadow: 0 6px 18px rgba(227,51,51,0.08);
+    }
+    nav ul{display:flex;gap:18px;align-items:center;margin:0;padding:0;list-style:none;}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:14px;}
+    .search{
+      display:flex;align-items:center;border:1px solid #e6eef7;padding:8px 12px;border-radius:999px;gap:8px;min-width:260px;
+    }
+    .search input{border:none;outline:none;font-size:14px;background:transparent}
+    .icons{display:flex;gap:12px;align-items:center}
+    .hero{
+      margin-top:18px;
+      display:flex;
+      gap:18px;
+      align-items:stretch;
+    }
+    .hero-main{
+      flex:2;
+      height:320px;
+      border-radius:14px;
+      overflow:hidden;
+      position:relative;
+      background:#111;
+    }
+    .hero-main img{width:100%;height:100%;object-fit:cover;display:block}
+    .hero-side{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .small-card{
+      flex:1;border-radius:12px;overflow:hidden;border:1px solid #eef2f6;background:#fafbff;display:flex;align-items:center;justify-content:center;padding:12px;
+    }
+    .section{
+      margin-top:28px;
+    }
+    .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .section-title{font-size:20px;font-weight:700}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
+    .product{
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid #eef2f6;
+      padding:12px;
+      background:white;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      transition:transform var(--transition), box-shadow var(--transition);
+    }
+    .product:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(15,23,32,0.06)}
+    .product img{width:100%;height:160px;object-fit:cover;border-radius:8px;background:#f3f7fb}
+    .product .title{font-weight:700;font-size:14px}
+    .product .price{font-weight:800;color:var(--dark)}
+    .product .old{font-size:13px;color:var(--muted);text-decoration:line-through}
+    .product .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px}
+    .btn{
+      border:none;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer;
+      transition:opacity var(--transition);
+    }
+    .btn-primary{background:var(--red);color:white}
+    .btn-ghost{background:transparent;border:1px solid #e6eef7;color:var(--dark)}
+    @media (max-width:1024px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .hero{flex-direction:column}
+      .hero-main{height:220px}
+    }
+    @media (max-width:560px){
+      nav ul{display:none}
+      .search{min-width:140px}
+      .grid{grid-template-columns:repeat(1,1fr)}
+      .topbar{height:64px}
+    }
+    .modal{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,10,10,0.45);z-index:60;padding:20px;
+    }
+    .modal .card{width:900px;max-width:100%;background:white;border-radius:12px;padding:18px;display:flex;gap:18px}
+    .modal img{width:360px;height:360px;object-fit:cover;border-radius:8px}
+    .close-btn{position:absolute;right:18px;top:12px;background:transparent;border:none;color:white;font-size:20px;cursor:pointer}
+    .badge{
+      display:inline-block;padding:6px 8px;border-radius:999px;background:#fef2e9;color:#7a4a00;font-weight:700;font-size:12px;
+    }
+    .cart-counter{
+      background:var(--red);color:white;border-radius:999px;padding:4px 8px;font-weight:800;font-size:12px;
+      min-width:28px;text-align:center;
+    }
+    .muted{color:var(--muted);font-size:13px}
+    .price-row{display:flex;gap:8px;align-items:center}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <a href="#" class="logo" aria-label="Rexus Clone">
+        <div class="mark">RX</div>
+        <div>
+          <div style="font-weight:800">Rexus</div>
+          <div class="muted" style="font-size:12px;margin-top:2px">Perlengkapan Gaming & Office</div>
+        </div>
+      </a>
+
+      <nav>
+        <ul>
+          <li><a href="#">Daxa</a></li>
+          <li><a href="#">Produk</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Dukungan</a></li>
+        </ul>
+      </nav>
+
+      <div style="display:flex;gap:12px;align-items:center">
+        <div class="search" role="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <input id="searchInput" placeholder="Cari produk, misal: mouse, keyboard..." />
+        </div>
+
+        <div class="icons">
+          <button class="btn btn-ghost" id="loginBtn">Login</button>
+          <button class="btn btn-ghost" id="cartBtn" title="Cart">
+            Cart <span id="cartCount" class="cart-counter">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-main" id="carousel">
+        <img src="https://picsum.photos/1200/600?random=11" alt="hero" id="carouselImg" />
+      </div>
+      <div class="hero-side">
+        <div class="small-card">
+          <div>
+            <div style="font-weight:800">EXCLUSIVE</div>
+            <div class="muted" style="margin-top:6px">Penawaran spesial untuk kamu!</div>
+          </div>
+        </div>
+        <div class="small-card">
+          <div>
+            <div style="font-weight:800">NEW ARRIVAL</div>
+            <div class="muted" style="margin-top:6px">Produk terbaru Rexus</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Produk Terbaru</div>
+          <div class="muted" style="margin-top:4px">Pilihan terbaik dengan harga promo</div>
+        </div>
+        <div class="muted">Tampilkan: <strong>Semua</strong></div>
+      </div>
+
+      <div class="grid" id="productGrid"></div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal" role="dialog" aria-hidden="true">
+    <button class="close-btn" id="modalClose" title="Tutup">&times;</button>
+    <div class="card">
+      <img src="" alt="product" id="modalImg">
+      <div style="flex:1;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <h3 id="modalTitle" style="margin:0"></h3>
+            <div class="muted" id="modalSku" style="margin-top:6px"></div>
+          </div>
+          <div style="text-align:right">
+            <div class="badge" id="modalBadge">NEW</div>
+            <div class="muted" style="margin-top:8px">Stok: <strong id="modalStock">10</strong></div>
+          </div>
+        </div>
+
+        <div class="price-row">
+          <div class="price" id="modalPrice" style="font-size:22px;font-weight:900"></div>
+          <div class="old" id="modalOld" style="font-size:14px"></div>
+        </div>
+
+        <p id="modalDesc" class="muted">Deskripsi singkat produk akan ditampilkan di sini.</p>
+
+        <div style="margin-top:auto;display:flex;gap:12px">
+          <button class="btn btn-primary" id="addCartModal">Tambahkan ke Keranjang</button>
+          <button class="btn btn-ghost" id="buyNow">Beli Sekarang</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      { id:1, title:"Rexus ShagaX RX130 Mouse Gaming Wireless", price:349000, old:529000, img:"https://picsum.photos/seed/m1/600/400", badge:"NEW", sku:"RX130" },
+      { id:2, title:"Rexus TWS NA-12 Stitch Edition Earphone", price:359000, old:509000, img:"https://picsum.photos/seed/m2/600/400", badge:"HOT", sku:"NA12" },
+      { id:3, title:"Rexus Aether Keyboard Gaming Mechanical", price:599000, old:993000, img:"https://picsum.photos/seed/m3/600/400", badge:"BEST", sku:"AETHER" },
+      { id:4, title:"Rexus Flow QZ30 Mouse Office Wireless", price:449000, old:649000, img:"https://picsum.photos/seed/m4/600/400", badge:"SALE", sku:"QZ30" },
+      { id:5, title:"Rexus Marvel Bundle 01 - Gamepad + Mouse + Pad", price:1110000, old:1520000, img:"https://picsum.photos/seed/m5/600/400", badge:"BUNDLE", sku:"BNDL01" },
+      { id:6, title:"Rexus Q-Pix Bundle 01 - Mouse + Mousepad", price:90000, old:147500, img:"https://picsum.photos/seed/m6/600/400", badge:"DEAL", sku:"QPIX1" },
+      { id:7, title:"REXUS BUNDLE BTS 01 - Keyboard + Keycaps", price:429000, old:699000, img:"https://picsum.photos/seed/m7/600/400", badge:"LIMITED", sku:"BTS01" },
+      { id:8, title:"Rexus Workfit Bundle - Kursi & Meja", price:2949000, old:5378000, img:"https://picsum.photos/seed/m8/600/400", badge:"WORK", sku:"WF01" },
+    ];
+
+    const grid = document.getElementById('productGrid');
+    const cartCountEl = document.getElementById('cartCount');
+    let cartCount = 0;
+
+    function formatRupiah(n){
+      return 'Rp ' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function renderProducts(list){
+      grid.innerHTML = '';
+      list.forEach(p=>{
+        const card = document.createElement('div');
+        card.className = 'product';
+        card.innerHTML = `
+          <div style="position:relative">
+            <img loading="lazy" src="${p.img}" alt="${p.title}">
+            <div style="position:absolute;left:10px;top:10px">
+              <span class="badge">${p.badge}</span>
+            </div>
+          </div>
+          <div>
+            <div class="title">${p.title}</div>
+            <div class="muted" style="margin-top:6px">${p.sku}</div>
+            <div class="meta">
+              <div>
+                <div class="price">${formatRupiah(p.price)}</div>
+                <div class="old">${formatRupiah(p.old)}</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <button class="btn btn-primary" data-id="${p.id}" aria-label="Tambah ke cart">Add</button>
+                <button class="btn btn-ghost" data-quick="${p.id}">Quick</button>
+              </div>
+            </div>
+          </div>`;
+        grid.appendChild(card);
+      });
+
+      document.querySelectorAll('.btn-primary').forEach(btn=>{
+        btn.onclick = (e)=>{ addToCart(+e.currentTarget.dataset.id); }
+      });
+      document.querySelectorAll('[data-quick]').forEach(btn=>{
+        btn.onclick = (e)=>{ openModal(+e.currentTarget.dataset.quick); }
+      });
+    }
+
+    function addToCart(id){
+      cartCount++;
+      cartCountEl.textContent = cartCount;
+      cartCountEl.animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}],{duration:300});
+    }
+
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', (e)=>{
+      const q = e.target.value.trim().toLowerCase();
+      const filtered = products.filter(p=> p.title.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q));
+      renderProducts(filtered);
+    });
+
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalOld = document.getElementById('modalOld');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalStock = document.getElementById('modalStock');
+    const modalBadge = document.getElementById('modalBadge');
+    let activeProduct = null;
+
+    function openModal(id){
+      const p = products.find(x=>x.id===id);
+      if(!p) return;
+      activeProduct = p;
+      modalImg.src = p.img;
+      modalTitle.textContent = p.title;
+      modalPrice.textContent = formatRupiah(p.price);
+      modalOld.textContent = formatRupiah(p.old);
+      modalDesc.textContent = `Deskripsi singkat untuk ${p.title}. Fitur unggulan: kualitas build, performa, dan garansi resmi.`;
+      modalStock.textContent = 20;
+      modalBadge.textContent = p.badge;
+      modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden','false');
+    }
+    function closeModal(){ modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
+    document.getElementById('modalClose').onclick = closeModal;
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+    document.getElementById('addCartModal').onclick = ()=>{ if(activeProduct) addToCart(activeProduct.id); };
+
+    const carouselImg = document.getElementById('carouselImg');
+    const carouselImages = [
+      "https://picsum.photos/seed/hero1/1200/600",
+      "https://picsum.photos/seed/hero2/1200/600",
+      "https://picsum.photos/seed/hero3/1200/600"
+    ];
+    let carouselIndex = 0;
+    function nextCarousel(){
+      carouselIndex = (carouselIndex + 1) % carouselImages.length;
+      carouselImg.style.opacity = 0;
+      setTimeout(()=>{ carouselImg.src = carouselImages[carouselIndex]; carouselImg.style.opacity = 1; }, 220);
+    }
+    setInterval(nextCarousel, 4500);
+
+    renderProducts(products);
+
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') closeModal();
+      if(e.key === '/' ) { e.preventDefault(); searchInput.focus(); }
+    });
+
+    document.querySelector('.logo').addEventListener('click', (ev)=>{ ev.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); });
+  </script>
+</body>
+</html>
