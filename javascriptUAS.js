@@ -7,6 +7,7 @@ const products = [
   { id:6, title:"Rexus Q-Pix Bundle 01 - Mouse + Mousepad", price:90000, old:147500, img:"https://picsum.photos/seed/m6/600/400", badge:"DEAL", sku:"QPIX1" },
   { id:7, title:"REXUS BUNDLE BTS 01 - Keyboard + Keycaps", price:429000, old:699000, img:"https://picsum.photos/seed/m7/600/400", badge:"LIMITED", sku:"BTS01" },
   { id:8, title:"Rexus Workfit Bundle - Kursi & Meja", price:2949000, old:5378000, img:"https://picsum.photos/seed/m8/600/400", badge:"WORK", sku:"WF01" }
+  { id:9, title:"Rexus Workfit Bundle - Kursi & Meja", price:2949000, old:5378000, img:"https://picsum.photos/seed/m8/600/400", badge:"WORK", sku:"WF01" }
 ];
 
 const grid = document.getElementById('productGrid');
